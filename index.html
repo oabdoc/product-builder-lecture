@@ -2,512 +2,133 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>Main Page</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <title>Intro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
   <style>
     body, html {
       margin: 0;
       padding: 0;
       width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #000;
       font-family: 'Roboto', sans-serif;
-      background-color: #fdfdfd;
-      color: #333;
-      overflow-x: hidden;
     }
-    
-    /* Header Styles */
-    header {
-      position: fixed;
+    .intro-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+    .bg-video {
+      position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
-      padding: 65px 50px 130px;
-      box-sizing: border-box;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 100;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 100%);
-      transition: transform 2s cubic-bezier(0.25, 1, 0.5, 1), opacity 2s cubic-bezier(0.25, 1, 0.5, 1);
-    }
-
-    header.hidden {
-      transform: translateY(-100%);
-      opacity: 0;
-      pointer-events: none;
-    }
-    
-    .nav-left {
-      display: flex;
-      gap: 30px;
-      font-size: 1.15rem;
-      font-weight: 400;
-    }
-    
-    .nav-left a {
-      text-decoration: none;
-      color: #fff;
-      cursor: pointer;
-      transition: opacity 0.2s ease;
-    }
-    
-    .nav-left a:hover {
-      opacity: 0.6;
-    }
-    
-    .logo-container {
-      position: absolute;
-      top: 45px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    .logo {
-      height: 80px; 
-      object-fit: contain;
-    }
-    
-    .nav-right {
-      display: flex;
-      gap: 20px;
-      font-size: 1.15rem;
-      align-items: center;
-    }
-    
-    .nav-right .icon-btn {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      cursor: pointer;
-      color: #fff;
-      transition: opacity 0.2s ease;
-    }
-    
-    .nav-right .icon-btn:hover {
-      opacity: 0.6;
-    }
-    
-    /* Hero Section Styles */
-    .hero-section {
-      width: 100%;
-      position: relative;
-      display: flex;
-      justify-content: center;
-    }
-    
-    .hero-image {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-    
-    .hero-content {
-      position: absolute;
-      bottom: 80px;
-      z-index: 2;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 24px;
-      width: 100%;
-    }
-    
-    .hero-text {
-      font-family: 'Lora', serif;
-      font-size: 1.25rem;
-      font-weight: 400;
-      line-height: 1.4;
-      color: #111;
-      max-width: 400px;
-    }
-    
-    .discover-btn {
-      background-color: #000;
-      color: #fff;
-      padding: 12px 32px;
-      border-radius: 6px;
-      text-decoration: none;
-      font-size: 0.85rem;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      transition: background-color 0.3s ease, transform 0.2s ease;
-      cursor: pointer;
-    }
-    
-    .discover-btn:hover {
-      background-color: #333;
-      transform: translateY(-2px);
-    }
-    
-    /* Carousel Section Styles */
-    .divider-section {
-      width: 100%;
-      padding: 80px 50px 0;
-      box-sizing: border-box;
-    }
-    
-    .carousel-wrapper {
-      position: relative;
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-    }
-
-    .carousel-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(255, 255, 255, 0.3);
-      border: none;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      z-index: 10;
-      transition: background 0.3s, transform 0.3s;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-      backdrop-filter: blur(2px); /* 약간의 블러 효과를 주면 더 고급스럽습니다 */
-    }
-
-    .carousel-btn:hover {
-      background: rgba(255, 255, 255, 0.6);
-      transform: translateY(-50%) scale(1.05);
-    }
-
-    .carousel-btn svg {
-      width: 24px;
-      height: 24px;
-      color: #111;
-    }
-
-    .prev-btn { left: 20px; }
-    .next-btn { right: 20px; }
-
-    .carousel-track-container {
-      width: 100%;
-      overflow: hidden;
-      border-radius: 8px; /* Optional: adds smooth corners if desired */
-    }
-
-    .carousel-track {
-      display: flex;
-      transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-      width: 200%; /* 2 images */
-    }
-
-    .carousel-image {
-      width: 50%;
-      flex-shrink: 0;
-      display: block;
-      height: auto;
-    }
-
-    /* Content Section Styles */
-    .content-section {
-      padding: 100px 50px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background-color: #fff;
-    }
-
-    .section-title {
-      font-family: 'Lora', serif;
-      font-size: 2.2rem;
-      color: #111;
-      margin-bottom: 20px;
-      margin-top: 0;
-    }
-
-    .section-subtitle {
-      font-size: 1rem;
-      color: #666;
-      max-width: 600px;
-      text-align: center;
-      line-height: 1.6;
-      margin-bottom: 60px;
-    }
-    
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 40px;
-      width: 100%;
-      max-width: 1200px;
-    }
-    
-    .product-card {
-      background-color: #f9f9f9;
-      height: 350px;
-      border-radius: 8px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #999;
-      font-size: 0.9rem;
-      transition: transform 0.3s ease;
-      overflow: hidden;
-      position: relative;
-    }
-    
-    .product-card img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.3s ease;
+      z-index: 1;
     }
-    
-    .product-card:hover {
-      transform: translateY(-5px);
-    }
-    
-    .card-overlay {
+    .overlay {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.7);
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 30px;
-      text-align: center;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      box-sizing: border-box;
+      background: rgba(0, 0, 0, 0.15); /* 더 밝은 느낌을 위해 어둡기 정도를 낮춤 */
+      z-index: 2;
     }
-    
-    .product-card:hover .card-overlay {
-      opacity: 1;
+    .enter-btn {
+      position: absolute;
+      bottom: 40px;
+      right: 40px;
+      z-index: 3;
+      color: white;
+      font-size: 1rem;
+      font-weight: 300; /* Roboto Light */
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      padding: 10px 24px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 4px;
+      cursor: pointer;
+      background: transparent;
+      transition: all 0.3s ease;
     }
-    
-    .card-overlay strong {
-      font-size: 1.1rem;
-      margin-bottom: 12px;
-      letter-spacing: 1px;
+    .enter-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: white;
     }
-    
-    .card-overlay p {
-      font-size: 0.9rem;
-      line-height: 1.6;
-      margin: 0;
-      word-break: keep-all;
-    }
-    
-    /* Footer Styles */
-    footer {
-      background-color: #f4f4f4;
-      padding: 50px;
-      color: #111;
-    }
-
-    .footer-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      margin-bottom: 20px;
-    }
-
-    .footer-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 24px;
-      font-size: 0.85rem;
-      font-weight: 500;
-    }
-
-    .footer-links a {
-      text-decoration: none;
-      color: #111;
-    }
-
-    .footer-links a:hover {
+    .mute-btn {
+      position: absolute;
+      bottom: 40px;
+      left: 40px;
+      z-index: 3;
+      color: white;
+      font-size: 2rem;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      padding: 10px;
       opacity: 0.7;
+      filter: brightness(0) invert(1);
     }
-
-    .footer-copyright {
-      font-family: 'Lora', serif;
-      font-size: 0.85rem;
-      font-weight: 500;
-    }
-
-    .footer-bottom {
-      font-size: 0.7rem;
-      color: #888;
-      line-height: 1.6;
-      letter-spacing: -0.2px;
+    .mute-btn:hover {
+      transform: scale(1.1);
+      opacity: 1;
     }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
-  <header>
-    <div class="nav-left">
-      <a href="shop.html">Shop</a>
-      <a href="#">About</a>
-      <a href="00.html">Campaign</a>
-    </div>
-    
-    <div class="logo-container">
-      <img src="logo.png" alt="Logo" class="logo">
-    </div>
-    
-    <div class="nav-right">
-      <a href="login.html" class="icon-btn" style="text-decoration: none; color: #fff;">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-          <circle cx="12" cy="7" r="4"></circle>
-        </svg>
-      </a>
-      <div class="icon-btn">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-          <line x1="3" y1="6" x2="21" y2="6"></line>
-          <path d="M16 10a4 4 0 0 1-8 0"></path>
-        </svg>
-        <span>0</span>
-      </div>
-    </div>
-  </header>
-
-  <!-- Hero Section -->
-  <main class="hero-section">
-    <!-- Main Background Video -->
-    <video class="hero-image" autoplay loop muted playsinline>
-      <source src="product_mv.mp4" type="video/mp4">
+  <div class="intro-container">
+    <video id="bgVideo" class="bg-video" loop playsinline>
+      <source src="main_mv.mp4" type="video/mp4">
     </video>
-    
-    <div class="hero-content">
-      <div class="hero-text">
-        당신의 데스크 위,<br>가장 고요한 마스터피스.
-      </div>
-      <a href="detail.html" class="discover-btn">더 알아보기</a>
-    </div>
-  </main>
-
-  <!-- Divider Section (Carousel) -->
-  <section class="divider-section" id="image-carousel-section">
-    <div class="carousel-wrapper">
-      <button class="carousel-btn prev-btn" id="prevBtn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="15 18 9 12 15 6"></polyline>
-        </svg>
-      </button>
-      
-      <div class="carousel-track-container">
-        <div class="carousel-track" id="carouselTrack">
-          <img src="03.png" alt="Featured 1" class="carousel-image">
-          <img src="02.png" alt="Featured 2" class="carousel-image">
-        </div>
-      </div>
-
-      <button class="carousel-btn next-btn" id="nextBtn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="9 18 15 12 9 6"></polyline>
-        </svg>
-      </button>
-    </div>
-  </section>
-
-  <!-- Content Section -->
-  <section class="content-section">
-    <h2 class="section-title">제품 사용법 알아보기</h2>
-    <p class="section-subtitle">복잡한 앱을 켤 필요도, 타인의 시선을 의식할 필요도 없습니다. 즉각적으로 스트레스를 해소하고, 당신의 퍼포먼스를 복구하세요.</p>
-    
-    <div class="product-grid">
-      <div class="product-card">
-        <img src="ty01.png" alt="Product 1">
-        <div class="card-overlay">
-          <strong>STEP 1. TOUCH & WAKE</strong>
-          <p>회의 중 감정이 흔들리거나 집중이 흐트러질 때, 엄지를 2초간 가볍게 올려두세요. 그 짧은 순간, GSR 센서가 피부 반응을 빠르게 감지합니다.</p>
-        </div>
-      </div>
-      <div class="product-card">
-        <img src="ty02.png" alt="Product 2">
-        <div class="card-overlay">
-          <strong>STEP 2. SMART DISPENSE</strong>
-          <p>교감신경 과부하가 감지되면, 상단 슬롯이 열리며 L-테아닌 구강 용해 필름(ODF) 1장을 자동으로 제공합니다. 물이나 별도의 준비 없이, 꺼내 바로 혀 밑에 두면 됩니다.</p>
-        </div>
-      </div>
-      <div class="product-card">
-        <img src="ty03.png" alt="Product 3">
-        <div class="card-overlay">
-          <strong>STEP 3. RETURN TO PEAK</strong>
-          <p>구강 점막을 통해 빠르게 흡수된 L-테아닌이 긴장 상태를 완화합니다. 졸림 없이 불필요한 긴장을 줄이고, 다시 안정적인 집중 상태로 돌아갈 수 있습니다.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <div class="footer-top">
-      <div class="footer-links">
-        <a href="#">문의하기</a>
-        <a href="#">고객 서비스</a>
-        <a href="#">스토어 찾기</a>
-        <a href="#">법적 고지</a>
-        <a href="#">개인정보 처리방침</a>
-        <a href="#">구독하기</a>
-        <a href="#">소셜</a>
-        <a href="#">국가: South Korea</a>
-      </div>
-      <div class="footer-copyright">
-        ©2026. ORB. ALL RIGHT RESERVED
-      </div>
-    </div>
-    <div class="footer-bottom">
-      (주)오브 | 대표자명: 홍길동 | 사업자등록번호: 211-88-01234 | 통신판매업신고번호: 제2026-서울강남-5678호 | 이메일문의: contact@orb.kr | 개인정보보호책임자: 김철수 | 주소: 서울특별시 강남구 역삼로 456, 12층 | 전화번호: 02-1234-5678<br>
-      고객님의 안전한 현금결제 거래를 위해 저희 쇼핑몰에서 가입한 구매안전서비스를 이용하실 수 있습니다.
-    </div>
-  </footer>
+    <div class="overlay"></div>
+    <div class="mute-btn" id="muteBtn" onclick="toggleMute()">🔊</div>
+    <div class="enter-btn" onclick="enterMain()">ENTER</div>
+  </div>
 
   <script>
-    let lastScrollY = window.scrollY;
-    const header = document.querySelector('header');
+    function enterMain() {
+      // 클릭 시 메인 홈페이지(main.html)로 이동
+      window.location.href = 'main.html'; 
+    }
 
-    window.addEventListener('scroll', () => {
-      const currentScrollY = window.scrollY;
-      
-      if (currentScrollY > lastScrollY && currentScrollY > 80) {
-        // Scroll down
-        header.classList.add('hidden');
+    const video = document.getElementById('bgVideo');
+    const muteBtn = document.getElementById('muteBtn');
+
+    // 시도: 기본값으로 소리 켜고 재생
+    video.muted = false;
+    let playPromise = video.play();
+
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        // 소리와 함께 재생 성공
+        muteBtn.textContent = "🔊";
+      }).catch((error) => {
+        // 브라우저 정책으로 차단됨 -> 음소거로 변경해서라도 영상이 화면에 나오게끔 강제 재생
+        video.muted = true;
+        video.play();
+        muteBtn.textContent = "🔇";
+      });
+    }
+
+    function toggleMute() {
+      if (video.muted) {
+        video.muted = false;
+        muteBtn.textContent = "🔊";
       } else {
-        // Scroll up
-        header.classList.remove('hidden');
+        video.muted = true;
+        muteBtn.textContent = "🔇";
       }
-      
-      lastScrollY = currentScrollY;
-    });
-
-    // Image Carousel Logic
-    const track = document.getElementById('carouselTrack');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    
-    // index 0 -> 03.png, index 1 -> 02.png
-    let currentIndex = 0;
-
-    prevBtn.addEventListener('click', () => {
-      currentIndex = 0;
-      track.style.transform = `translateX(0%)`;
-    });
-
-    nextBtn.addEventListener('click', () => {
-      currentIndex = 1;
-      track.style.transform = `translateX(-50%)`;
-    });
-
+    }
   </script>
+
 </body>
 </html>

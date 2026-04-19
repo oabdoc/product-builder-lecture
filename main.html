@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>Detail Page - Orb</title>
+  <title>Main Page</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
   <style>
     body, html {
@@ -10,8 +10,9 @@
       padding: 0;
       width: 100%;
       font-family: 'Roboto', sans-serif;
-      background-color: #111; /* 영상을 더 선명하고 텍스트가 잘 보이도록 어두운 배경으로 변경 */
-      color: #fff;
+      background-color: #fdfdfd;
+      color: #333;
+      overflow-x: hidden;
     }
     
     /* Header Styles */
@@ -26,7 +27,7 @@
       justify-content: space-between;
       align-items: center;
       z-index: 100;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 100%); /* 어두운 배경에 맞게 다시 수정 */
+      background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 100%);
       transition: transform 2s cubic-bezier(0.25, 1, 0.5, 1), opacity 2s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
@@ -45,7 +46,7 @@
     
     .nav-left a {
       text-decoration: none;
-      color: #fff; /* 원래의 흰색으로 복구 */
+      color: #fff;
       cursor: pointer;
       transition: opacity 0.2s ease;
     }
@@ -78,7 +79,7 @@
       align-items: center;
       gap: 5px;
       cursor: pointer;
-      color: #fff; /* 원래의 흰색으로 복구 */
+      color: #fff;
       transition: opacity 0.2s ease;
     }
     
@@ -86,72 +87,127 @@
       opacity: 0.6;
     }
     
-    /* Scroll Text Section Styles */
-    .scroll-text-section {
+    /* Hero Section Styles */
+    .hero-section {
+      width: 100%;
       position: relative;
-      z-index: 1;
-      width: 100%;
-      height: 300vh; /* 500vh에서 300vh로 줄여 스크롤 피로도를 낮춤 */
-      background-color: transparent;
-    }
-
-    .scroll-text-container {
-      position: sticky;
-      top: 0;
-      width: 100%;
-      height: 100vh;
       display: flex;
       justify-content: center;
+    }
+    
+    .hero-image {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    .hero-content {
+      position: absolute;
+      bottom: 80px;
+      z-index: 2;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      width: 100%;
+    }
+    
+    .hero-text {
+      font-family: 'Lora', serif;
+      font-size: 1.25rem;
+      font-weight: 400;
+      line-height: 1.4;
+      color: #111;
+      max-width: 400px;
+    }
+    
+    .discover-btn {
+      background-color: #000;
+      color: #fff;
+      padding: 12px 32px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      cursor: pointer;
+    }
+    
+    .discover-btn:hover {
+      background-color: #333;
+      transform: translateY(-2px);
+    }
+    
+    /* Carousel Section Styles */
+    .divider-section {
+      width: 100%;
+      padding: 80px 50px 0;
+      box-sizing: border-box;
+    }
+    
+    .carousel-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
       align-items: center;
     }
 
-    .reveal-text {
+    .carousel-btn {
       position: absolute;
-      font-family: 'Roboto', sans-serif;
-      font-weight: 500;
-      font-size: 2.8rem; /* 텍스트 크기 증가 (기존 2.2rem) */
-      line-height: 1.5;
-      color: #fff;
-      margin: 0;
-      opacity: 0;
-      transform: translateY(40px); /* 처음에 약간 아래에 위치 */
-      transition: opacity 1s ease-out, transform 1s ease-out; /* 전환 속도를 1초로 약간 빠르게 조절 */
-      text-align: center;
-      width: 100%;
-      padding: 0 30px;
-      box-sizing: border-box;
-      pointer-events: none;
-    }
-    
-    .reveal-text.active {
-      opacity: 1;
-      transform: translateY(0); /* 정중앙으로 올라오며 등장 */
-    }
-    
-    .reveal-text.past {
-      opacity: 0;
-      transform: translateY(-40px); /* 위로 사라짐 */
-    }
-    
-    @media (max-width: 768px) {
-      .reveal-text {
-        font-size: 2.0rem; /* 모바일에서도 텍스트 크기 증가 (기존 1.6rem) */
-      }
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.3);
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 10;
+      transition: background 0.3s, transform 0.3s;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      backdrop-filter: blur(2px); /* 약간의 블러 효과를 주면 더 고급스럽습니다 */
     }
 
-    /* Background Video Style */
-    .bg-video {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      z-index: 0; /* 배경색 위로 올라오도록 0으로 설정 */
-      opacity: 0.45; /* 영상이 더 선명하게 보이도록 투명도 증가 */
-      pointer-events: none;
+    .carousel-btn:hover {
+      background: rgba(255, 255, 255, 0.6);
+      transform: translateY(-50%) scale(1.05);
     }
-    
+
+    .carousel-btn svg {
+      width: 24px;
+      height: 24px;
+      color: #111;
+    }
+
+    .prev-btn { left: 20px; }
+    .next-btn { right: 20px; }
+
+    .carousel-track-container {
+      width: 100%;
+      overflow: hidden;
+      border-radius: 8px; /* Optional: adds smooth corners if desired */
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+      width: 200%; /* 2 images */
+    }
+
+    .carousel-image {
+      width: 50%;
+      flex-shrink: 0;
+      display: block;
+      height: auto;
+    }
+
     /* Content Section Styles */
     .content-section {
       padding: 100px 50px;
@@ -159,8 +215,6 @@
       flex-direction: column;
       align-items: center;
       background-color: #fff;
-      position: relative;
-      z-index: 2; /* To appear above the background video */
     }
 
     .section-title {
@@ -254,8 +308,6 @@
       background-color: #f4f4f4;
       padding: 50px;
       color: #111;
-      position: relative;
-      z-index: 2;
     }
 
     .footer-top {
@@ -298,11 +350,6 @@
 </head>
 <body>
 
-  <!-- Background Video -->
-  <video class="bg-video" autoplay loop muted playsinline>
-    <source src="mv01.mp4" type="video/mp4">
-  </video>
-
   <!-- Header -->
   <header>
     <div class="nav-left">
@@ -333,13 +380,42 @@
     </div>
   </header>
 
-  <!-- Scroll Text Section -->
-  <section class="scroll-text-section">
-    <div class="scroll-text-container">
-      <p class="reveal-text">흐트러진 맥박, 정의할 수 없는 스트레스</p>
-      <p class="reveal-text">당신의 수치를 읽고</p>
-      <p class="reveal-text">한치의 오차 없이 필요한 안정만을 전달합니다.</p>
-      <p class="reveal-text">당신의 데스크 위, 가장 고요한 디바이스</p>
+  <!-- Hero Section -->
+  <main class="hero-section">
+    <!-- Main Background Video -->
+    <video class="hero-image" autoplay loop muted playsinline>
+      <source src="product_mv.mp4" type="video/mp4">
+    </video>
+    
+    <div class="hero-content">
+      <div class="hero-text">
+        당신의 데스크 위,<br>가장 고요한 마스터피스.
+      </div>
+      <a href="detail.html" class="discover-btn">더 알아보기</a>
+    </div>
+  </main>
+
+  <!-- Divider Section (Carousel) -->
+  <section class="divider-section" id="image-carousel-section">
+    <div class="carousel-wrapper">
+      <button class="carousel-btn prev-btn" id="prevBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+      
+      <div class="carousel-track-container">
+        <div class="carousel-track" id="carouselTrack">
+          <img src="03.png" alt="Featured 1" class="carousel-image">
+          <img src="02.png" alt="Featured 2" class="carousel-image">
+        </div>
+      </div>
+
+      <button class="carousel-btn next-btn" id="nextBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
     </div>
   </section>
 
@@ -391,7 +467,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      (주)오브 | 대표자명: 홍길동 | 사업자등록번호: 123-45-67890 | 통신판매업신고번호: 제2024-서울강남-1234호 | 이메일문의: cs@orb.com | 개인정보보호책임자: 김철수 | 주소: 서울특별시 강남구 테헤란로 123 4층 | 전화번호: 1234-5678<br>
+      (주)오브 | 대표자명: 홍길동 | 사업자등록번호: 211-88-01234 | 통신판매업신고번호: 제2026-서울강남-5678호 | 이메일문의: contact@orb.kr | 개인정보보호책임자: 김철수 | 주소: 서울특별시 강남구 역삼로 456, 12층 | 전화번호: 02-1234-5678<br>
       고객님의 안전한 현금결제 거래를 위해 저희 쇼핑몰에서 가입한 구매안전서비스를 이용하실 수 있습니다.
     </div>
   </footer>
@@ -414,46 +490,24 @@
       lastScrollY = currentScrollY;
     });
 
-    // Scroll Animation Logic for Texts
-    const texts = document.querySelectorAll('.reveal-text');
-    const section = document.querySelector('.scroll-text-section');
+    // Image Carousel Logic
+    const track = document.getElementById('carouselTrack');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
     
-    function updateScrollTexts() {
-      const rect = section.getBoundingClientRect();
-      const maxScroll = rect.height - window.innerHeight;
-      let scrollY = -rect.top;
-      
-      // 스크롤이 섹션 영역 안에 있는지 확인
-      if (scrollY < 0) scrollY = 0;
-      if (scrollY > maxScroll) scrollY = maxScroll;
-      
-      const progress = scrollY / maxScroll;
-      const totalTexts = texts.length;
-      
-      // 현재 진행도에 따른 텍스트 인덱스 계산
-      let currentIndex = Math.floor(progress * totalTexts);
-      if (currentIndex >= totalTexts) currentIndex = totalTexts - 1;
-      
-      texts.forEach((text, i) => {
-        if (i === currentIndex) {
-          text.classList.add('active');
-          text.classList.remove('past');
-        } else if (i < currentIndex) {
-          // 지나간 텍스트
-          text.classList.remove('active');
-          text.classList.add('past');
-        } else {
-          // 아직 오지 않은 텍스트
-          text.classList.remove('active');
-          text.classList.remove('past');
-        }
-      });
-    }
+    // index 0 -> 03.png, index 1 -> 02.png
+    let currentIndex = 0;
 
-    window.addEventListener('scroll', updateScrollTexts);
-    
-    // 초기 로드 시 한 번 실행
-    updateScrollTexts();
+    prevBtn.addEventListener('click', () => {
+      currentIndex = 0;
+      track.style.transform = `translateX(0%)`;
+    });
+
+    nextBtn.addEventListener('click', () => {
+      currentIndex = 1;
+      track.style.transform = `translateX(-50%)`;
+    });
+
   </script>
 </body>
 </html>
