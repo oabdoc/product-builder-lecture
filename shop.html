@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Shop - Orb</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      font-family: 'Roboto', sans-serif;
+      background-color: #fff;
+      color: #333;
+    }
+    
+    /* Header Styles */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 40px 50px;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      background: transparent;
+    }
+    
+    .nav-left {
+      display: flex;
+      gap: 30px;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+    
+    .nav-left a {
+      text-decoration: none;
+      color: #111;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+    
+    .nav-left a:hover {
+      opacity: 0.6;
+    }
+    
+    .logo-container {
+      position: absolute;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .logo {
+      height: 40px; 
+      object-fit: contain;
+      filter: invert(1);
+    }
+    
+    .nav-right {
+      display: flex;
+      gap: 20px;
+      font-size: 1rem;
+      align-items: center;
+    }
+    
+    .nav-right .icon-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      color: #111;
+      transition: opacity 0.2s ease;
+    }
+    
+    .nav-right .icon-btn:hover {
+      opacity: 0.6;
+    }
+
+    /* Shop Layout */
+    .shop-container {
+      display: flex;
+      width: 100%;
+      min-height: 100vh;
+    }
+
+    .shop-left {
+      flex: 1;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      background-color: #e9ecef; /* 연한 회색 배경 */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .shop-left img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .shop-right {
+      flex: 1;
+      padding: 150px 10%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-info {
+      max-width: 500px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .product-title {
+      font-size: 1.4rem;
+      font-weight: 500;
+      margin: 0 0 10px 0;
+      color: #111;
+    }
+
+    .product-price {
+      font-size: 1.1rem;
+      font-weight: 400;
+      margin: 0 0 30px 0;
+      color: #333;
+    }
+
+    .scent-notes {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #555;
+      margin-bottom: 15px;
+    }
+
+    .product-description {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: #666;
+      margin-bottom: 40px;
+    }
+
+    /* Variant Gallery */
+    .variant-gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr); /* 4개에서 3개로 변경 */
+      gap: 15px;
+      margin-bottom: 40px;
+      padding-bottom: 30px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .variant-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .variant-item img {
+      width: 100%;
+      aspect-ratio: 1/1.2;
+      object-fit: cover;
+      background-color: #f4f4f4;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      transition: opacity 0.2s;
+    }
+
+    .variant-item.active img {
+      outline: 1px solid #111;
+    }
+
+    .variant-item:hover img {
+      opacity: 0.8;
+    }
+
+    .variant-item p {
+      font-size: 0.65rem;
+      color: #555;
+      margin: 0;
+      line-height: 1.3;
+    }
+
+    /* Size Selector */
+    .section-label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin: 0 0 15px 0;
+      color: #333;
+    }
+
+    .size-selector {
+      margin-bottom: 40px;
+    }
+
+    .size-btn {
+      background: none;
+      border: 1px solid #111;
+      padding: 10px 30px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-family: inherit;
+      color: #111;
+    }
+
+    .add-to-cart-btn {
+      width: 100%;
+      background-color: #000;
+      color: #fff;
+      border: none;
+      padding: 18px 0;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      margin-bottom: 50px;
+      transition: background-color 0.2s;
+    }
+
+    .add-to-cart-btn:hover {
+      background-color: #333;
+    }
+
+    /* Cart Animation Styles */
+    .fly-item {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      background-color: #111;
+      border-radius: 50%;
+      z-index: 1000;
+      pointer-events: none;
+      transition: top 0.6s cubic-bezier(0.25, 1, 0.5, 1), left 0.6s cubic-bezier(0.25, 1, 0.5, 1), transform 0.6s ease-in, opacity 0.6s ease-in;
+    }
+
+    @keyframes cartBounce {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    .cart-bounce {
+      animation: cartBounce 0.3s ease-in-out;
+    }
+
+    /* Cart Sidebar Styles */
+    .cart-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0,0,0,0.4);
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease;
+    }
+
+    .cart-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .cart-sidebar {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 400px;
+      max-width: 100vw;
+      height: 100vh;
+      background-color: #fff;
+      z-index: 1001;
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+      display: flex;
+      flex-direction: column;
+      box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+    }
+
+    .cart-sidebar.open {
+      transform: translateX(0);
+    }
+
+    .cart-header {
+      padding: 30px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cart-header h2 {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: #111;
+    }
+
+    .cart-close {
+      background: none;
+      border: none;
+      font-size: 2rem;
+      cursor: pointer;
+      color: #333;
+      line-height: 1;
+    }
+
+    .cart-items-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 30px;
+    }
+
+    .empty-cart-msg {
+      text-align: center;
+      color: #888;
+      font-size: 0.9rem;
+      margin-top: 50px;
+    }
+
+    .cart-item {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .cart-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      background-color: #f4f4f4;
+      border-radius: 4px;
+      border: 1px solid #eee;
+    }
+
+    .cart-item-details {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .cart-item-title {
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin: 0 0 5px 0;
+      color: #111;
+    }
+
+    .cart-item-size {
+      font-size: 0.75rem;
+      color: #888;
+      margin: 0 0 10px 0;
+    }
+
+    .cart-item-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cart-item-price {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #111;
+    }
+
+    .cart-item-qty {
+      font-size: 0.8rem;
+      color: #555;
+    }
+
+    .qty-selector {
+      display: flex;
+      align-items: center;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .qty-btn {
+      background: none;
+      border: none;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #333;
+      padding: 0;
+    }
+    
+    .qty-btn:hover {
+      background-color: #f4f4f4;
+    }
+
+    .qty-value {
+      width: 24px;
+      text-align: center;
+      font-size: 0.8rem;
+    }
+
+    .cart-footer {
+      padding: 30px;
+      border-top: 1px solid #eee;
+    }
+
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #111;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      background-color: #111;
+      color: #fff;
+      border: none;
+      padding: 18px 0;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .checkout-btn:hover {
+      background-color: #333;
+    }
+
+    /* Accordion Section */
+    .accordion-section {
+      border-top: 1px solid #eee;
+    }
+
+    .accordion-item {
+      border-bottom: 1px solid #eee;
+    }
+
+    .accordion-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: #333;
+    }
+
+    .accordion-icon {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.3s;
+    }
+
+    .accordion-item.open .accordion-icon {
+      transform: rotate(90deg);
+    }
+
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      font-size: 0.8rem;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .accordion-content ul {
+      margin: 0;
+      padding: 0 0 20px 20px;
+    }
+
+    .accordion-content li {
+      margin-bottom: 8px;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .shop-container {
+        flex-direction: column;
+      }
+      .shop-left {
+        height: 60vh;
+        position: relative;
+      }
+      .shop-right {
+        padding: 50px 20px;
+      }
+      .header {
+        background: #fff;
+      }
+    }
+
+    /* Footer Styles */
+    footer {
+      background-color: #f4f4f4;
+      padding: 50px;
+      color: #111;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 20px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .footer-links a {
+      text-decoration: none;
+      color: #111;
+    }
+
+    .footer-links a:hover {
+      opacity: 0.7;
+    }
+
+    .footer-copyright {
+      font-family: 'Lora', serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .footer-bottom {
+      font-size: 0.7rem;
+      color: #888;
+      line-height: 1.6;
+      letter-spacing: -0.2px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="nav-left">
+      <a href="shop.html">Shop</a>
+      <a href="#">About</a>
+      <a href="00.html">Campaign</a>
+    </div>
+    
+    <div class="logo-container">
+      <a href="index.html"><img src="logo.png" alt="Logo" class="logo"></a>
+    </div>
+    
+    <div class="nav-right">
+      <a href="login.html" class="icon-btn" style="text-decoration: none; color: #111;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </a>
+      <div class="icon-btn" id="cart-btn">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <path d="M16 10a4 4 0 0 1-8 0"></path>
+        </svg>
+        <span id="cart-count">0</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="shop-container">
+    <div class="shop-left">
+      <img src="product01.png" alt="ORB 디바이스 (블랙)" class="main-product-img">
+    </div>
+    <div class="shop-right">
+      <div class="product-info">
+        <h1 class="product-title">ORB 디바이스 (블랙)</h1>
+        <p class="product-price">₩ 129,000</p>
+        
+        <div class="scent-notes">
+          빠른 측정 | 스트레스 상태 파악 | L-테아닌 캡슐
+        </div>
+        
+        <p class="product-description">
+          치열한 업무 환경 속에서, 중요한 순간에 집중을 유지할 수 있도록 돕는 스트레스 관리 디바이스입니다. 중요한 결정을 앞두고 긴장이 높아질 때, 엄지를 2초간 올려두세요. 내장된 고감도 GSR 센서가 피부 반응을 빠르게 감지하고, 필요 시 테아닌 구강 용해 필름을 자동으로 제공합니다. 물 없이 혀 밑에서 녹는 방식으로 설계되어, 약 5분 내에 긴장을 완화하고 다시 집중 상태로 돌아갈 수 있습니다. 정확하고 간결하고 직관적인 방식으로 당신의 퍼포먼스를 유지합니다.
+        </p>
+        
+        <div class="variant-gallery">
+          <div class="variant-item active">
+            <img src="product01.png" alt="ORB 디바이스 (블랙)">
+            <p>ORB 디바이스 (블랙)</p>
+          </div>
+          <div class="variant-item">
+            <img src="002.png" alt="ORB 디바이스 (루비)">
+            <p>ORB 디바이스 (루비)</p>
+          </div>
+          <div class="variant-item">
+            <img src="003.png" alt="ORB 디바이스 (포레스트)">
+            <p>ORB 디바이스 (포레스트)</p>
+          </div>
+        </div>
+        
+        <div class="size-selector">
+          <p class="section-label">사이즈</p>
+          <button class="size-btn active">Small</button>
+        </div>
+        
+        <button class="add-to-cart-btn">쇼핑백에 추가</button>
+        
+        <div class="accordion-section">
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span>제품 사용법</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="accordion-icon">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </div>
+            <div class="accordion-content">
+              <div style="padding: 10px 0 20px 0; display: flex; flex-direction: column; gap: 15px;">
+                <div>
+                  <strong>STEP 1. TOUCH & WAKE</strong><br>
+                  회의 중 감정이 요동치거나 집중력이 무너짐을 느낄 때, 주머니 속이나 책상 위에 놓인 S.O.S 디바이스 표면에 엄지손가락을 2초간 가볍게 밀착하십시오. 버튼을 누를 필요도 없습니다. 당신의 체온과 압력이 닿는 즉시 시스템이 깨어납니다.
+                </div>
+                <div>
+                  <strong>STEP 2. SILENT SCAN</strong><br>
+                  손끝이 닿는 2초의 찰나, 표면에 직조된 고감도 GSR 센서가 당신의 미세 땀 분비량과 피부 전도도를 스캔합니다. 뇌의 과부하 상태(스트레스 지수) 판독이 끝나면, 오직 당신만 느낄 수 있는 묵직하고 세련된 1회의 햅틱 진동으로 상태를 피드백합니다.
+                </div>
+                <div>
+                  <strong>STEP 3. SMART DISPENSE</strong><br>
+                  시스템이 교감신경의 과부하를 확인하면, 측면의 은밀한 슬롯이 열리며 고농축 L-테아닌이 담긴 '구강 용해 필름(ODF)' 1장을 소리 없이 토출합니다. 물을 찾거나 알약 통을 뒤적일 필요가 없습니다. 지포 라이터를 다루듯 우아하게 필름을 뽑아 혀 밑에 올리십시오.
+                </div>
+                <div>
+                  <strong>STEP 4. RETURN TO PEAK</strong><br>
+                  구강 점막을 통해 혈류로 직행한 L-테아닌이 요동치는 심박수를 기계적으로 떨어뜨립니다. 졸음이나 부작용 없이, 불필요한 긴장감만 완벽하게 도려냅니다. 이제 다시 당신만의 압도적인 퍼포먼스로 판을 지배하십시오.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span>배송 및 반품</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="accordion-icon">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </div>
+            <div class="accordion-content">
+              <ul>
+                <li>3만원 이상 구매하실 경우 배송 비용은 무료입니다.</li>
+                <li>주문일로부터 1-2 영업일 이내 출고됩니다.</li>
+                <li>배송은 지역 택배사 사정에 따라 약간의 지연이 생길 수 있습니다. 배송이 시작되면 구매자에게는 이메일, 수령인에게는 카카오 알림톡으로 배송 정보를 전송해 드립니다.</li>
+                <li>상품 혹은 증정품의 포장(랩핑)을 개봉 및 훼손한 경우 반품이 불가합니다.</li>
+                <li>단순 변심 또는 주문 실수로 인한 교환이 불가합니다. 신중한 구매 부탁드립니다.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span>무료 쇼핑백 서비스</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="accordion-icon">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </div>
+            <div class="accordion-content">
+              <div style="padding: 10px 0 20px 0;">
+                쇼핑백 M사이즈를 추천드립니다.<br>
+                선물포장 패키지가 제공되는 품목 혹은 여러개의 제품을 함께 구매하실 경우, 1:1 문의하기를 통해 적합한 사이즈를 추천 받으실 수 있습니다.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-links">
+        <a href="#">문의하기</a>
+        <a href="#">고객 서비스</a>
+        <a href="#">스토어 찾기</a>
+        <a href="#">법적 고지</a>
+        <a href="#">개인정보 처리방침</a>
+        <a href="#">구독하기</a>
+        <a href="#">소셜</a>
+        <a href="#">국가: South Korea</a>
+      </div>
+      <div class="footer-copyright">
+        ©2026. ORB. ALL RIGHT RESERVED
+      </div>
+    </div>
+    <div class="footer-bottom">
+      (주)오브 | 대표자명: 홍길동 | 사업자등록번호: 123-45-67890 | 통신판매업신고번호: 제2024-서울강남-1234호 | 이메일문의: cs@orb.com | 개인정보보호책임자: 김철수 | 주소: 서울특별시 강남구 테헤란로 123 4층 | 전화번호: 1234-5678<br>
+      고객님의 안전한 현금결제 거래를 위해 저희 쇼핑몰에서 가입한 구매안전서비스를 이용하실 수 있습니다.
+    </div>
+  </footer>
+
+  <!-- Cart Sidebar -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <h2>장바구니</h2>
+      <button class="cart-close" id="cartCloseBtn">&times;</button>
+    </div>
+    <div class="cart-items-container" id="cartItemsContainer">
+      <div class="empty-cart-msg">장바구니가 비어있습니다.</div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>총 결제 금액</span>
+        <span id="cartTotalPrice">₩ 0</span>
+      </div>
+      <button class="checkout-btn">구매하기</button>
+    </div>
+  </div>
+
+  <script>
+    // Accordion Logic
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+    
+    accordionHeaders.forEach(header => {
+      header.addEventListener('click', () => {
+        const item = header.parentElement;
+        const content = item.querySelector('.accordion-content');
+        
+        // Toggle open class for rotating icon
+        item.classList.toggle('open');
+        
+        // Smooth slide down/up for content
+        if (item.classList.contains('open')) {
+          content.style.maxHeight = content.scrollHeight + 'px';
+        } else {
+          content.style.maxHeight = '0';
+        }
+      });
+    });
+
+    // Add to Cart Logic
+    const addToCartBtn = document.querySelector('.add-to-cart-btn');
+    const cartBtn = document.getElementById('cart-btn');
+    const cartCountSpan = document.getElementById('cart-count');
+    
+    // Elements for Sidebar
+    const cartSidebar = document.getElementById('cartSidebar');
+    const cartOverlay = document.getElementById('cartOverlay');
+    const cartCloseBtn = document.getElementById('cartCloseBtn');
+    const cartItemsContainer = document.getElementById('cartItemsContainer');
+    const cartTotalPrice = document.getElementById('cartTotalPrice');
+
+    // Cart State
+    let cartItems = [];
+    const BASE_PRICE = 129000;
+
+    // Open/Close Cart
+    function openCart() {
+      cartSidebar.classList.add('open');
+      cartOverlay.classList.add('active');
+    }
+
+    function closeCart() {
+      cartSidebar.classList.remove('open');
+      cartOverlay.classList.remove('active');
+    }
+
+    cartBtn.addEventListener('click', openCart);
+    cartCloseBtn.addEventListener('click', closeCart);
+    cartOverlay.addEventListener('click', closeCart);
+
+    function updateCartUI() {
+      cartItemsContainer.innerHTML = '';
+      
+      let totalQty = 0;
+      let totalPrice = 0;
+
+      if (cartItems.length === 0) {
+        cartItemsContainer.innerHTML = '<div class="empty-cart-msg">장바구니가 비어있습니다.</div>';
+        cartTotalPrice.textContent = '₩ 0';
+        cartCountSpan.textContent = '0';
+        return;
+      }
+
+      cartItems.forEach((item, index) => {
+        totalQty += item.quantity;
+        totalPrice += item.price * item.quantity;
+        
+        const itemEl = document.createElement('div');
+        itemEl.classList.add('cart-item');
+        itemEl.innerHTML = `
+          <img src="${item.imgSrc}" alt="${item.title}">
+          <div class="cart-item-details">
+            <div>
+              <p class="cart-item-title">${item.title}</p>
+              <p class="cart-item-size">Size: ${item.size}</p>
+            </div>
+            <div class="cart-item-bottom">
+              <div class="qty-selector">
+                <button class="qty-btn minus" data-index="${index}">-</button>
+                <span class="qty-value">${item.quantity}</span>
+                <button class="qty-btn plus" data-index="${index}">+</button>
+              </div>
+              <span class="cart-item-price">₩ ${(item.price * item.quantity).toLocaleString()}</span>
+            </div>
+          </div>
+        `;
+        cartItemsContainer.appendChild(itemEl);
+      });
+
+      cartCountSpan.textContent = totalQty;
+      cartTotalPrice.textContent = '₩ ' + totalPrice.toLocaleString();
+    }
+
+    // Handle Quantity Buttons Click (Event Delegation)
+    cartItemsContainer.addEventListener('click', (e) => {
+      if (e.target.classList.contains('qty-btn')) {
+        const index = parseInt(e.target.getAttribute('data-index'));
+        
+        if (e.target.classList.contains('plus')) {
+          cartItems[index].quantity += 1;
+        } else if (e.target.classList.contains('minus')) {
+          cartItems[index].quantity -= 1;
+          // Remove item if quantity reaches 0
+          if (cartItems[index].quantity <= 0) {
+            cartItems.splice(index, 1);
+          }
+        }
+        
+        updateCartUI();
+      }
+    });
+
+    addToCartBtn.addEventListener('click', () => {
+      // 1. Get current product info
+      const currentTitle = document.querySelector('.product-title').textContent;
+      const currentImgSrc = document.querySelector('.main-product-img').getAttribute('src');
+      const currentSize = document.querySelector('.size-btn.active').textContent;
+
+      // 2. Create flying dot
+      const flyItem = document.createElement('div');
+      flyItem.classList.add('fly-item');
+      
+      const btnRect = addToCartBtn.getBoundingClientRect();
+      const cartRect = cartBtn.getBoundingClientRect();
+      
+      // Start position (center of button)
+      flyItem.style.left = `${btnRect.left + btnRect.width / 2 - 10}px`;
+      flyItem.style.top = `${btnRect.top + btnRect.height / 2 - 10}px`;
+      
+      document.body.appendChild(flyItem);
+      
+      // Force reflow to ensure transition works
+      flyItem.getBoundingClientRect();
+      
+      // End position (center of cart icon)
+      flyItem.style.left = `${cartRect.left + cartRect.width / 2 - 10}px`;
+      flyItem.style.top = `${cartRect.top + cartRect.height / 2 - 10}px`;
+      flyItem.style.transform = 'scale(0.2)';
+      flyItem.style.opacity = '0.5';
+      
+      // 3. Animation end logic
+      setTimeout(() => {
+        flyItem.remove();
+        
+        // Add item to cart state
+        const existingItemIndex = cartItems.findIndex(i => i.title === currentTitle && i.size === currentSize);
+        if (existingItemIndex > -1) {
+          cartItems[existingItemIndex].quantity += 1;
+        } else {
+          cartItems.push({
+            title: currentTitle,
+            imgSrc: currentImgSrc,
+            size: currentSize,
+            price: BASE_PRICE,
+            quantity: 1
+          });
+        }
+        
+        // Update Sidebar UI
+        updateCartUI();
+        
+        // Bounce the cart icon
+        cartBtn.classList.add('cart-bounce');
+        setTimeout(() => cartBtn.classList.remove('cart-bounce'), 300);
+      }, 600);
+
+      // 4. Button feedback
+      const originalText = addToCartBtn.textContent;
+      addToCartBtn.textContent = '장바구니에 담겼습니다!';
+      addToCartBtn.style.backgroundColor = '#111';
+      addToCartBtn.style.color = '#fff';
+      
+      // Change color slightly to indicate success (e.g., dark gray)
+      addToCartBtn.style.backgroundColor = '#333';
+      
+      setTimeout(() => {
+        addToCartBtn.textContent = originalText;
+        addToCartBtn.style.backgroundColor = '';
+      }, 1500);
+    });
+
+    // Variant Selection Logic
+    const variantItems = document.querySelectorAll('.variant-item');
+    const mainProductImg = document.querySelector('.main-product-img');
+    const productTitle = document.querySelector('.product-title');
+
+    variantItems.forEach(item => {
+      item.addEventListener('click', () => {
+        // Remove active class from all
+        variantItems.forEach(v => v.classList.remove('active'));
+        // Add active class to clicked
+        item.classList.add('active');
+
+        // Update main image and title
+        const imgElement = item.querySelector('img');
+        const titleElement = item.querySelector('p');
+
+        if (imgElement && titleElement) {
+          // Fade effect could be added here, but direct src swap is requested
+          mainProductImg.src = imgElement.src;
+          mainProductImg.alt = imgElement.alt;
+          productTitle.textContent = titleElement.textContent;
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

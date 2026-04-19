@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ORB - Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Lora:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #fff;
+      color: #111;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    
+    /* Header Styles (Static, White Bg) */
+    header {
+      width: 100%;
+      padding: 20px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-sizing: border-box;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .nav-left, .nav-right {
+      display: flex;
+      gap: 30px;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    
+    header a {
+      text-decoration: none;
+      color: #111;
+    }
+    
+    .logo {
+      height: 24px;
+    }
+    
+    .nav-right .icon-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      color: #111;
+      text-decoration: none;
+    }
+    
+    .nav-right .icon-btn:hover {
+      opacity: 0.6;
+    }
+    
+    /* Login Main Container */
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 100px 20px;
+    }
+
+    .login-wrapper {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    /* Tabs */
+    .login-tabs {
+      display: flex;
+      margin-bottom: 30px;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .login-tabs div {
+      flex: 1;
+      text-align: center;
+      padding-bottom: 15px;
+      cursor: pointer;
+      color: #888;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .login-tabs div.active {
+      color: #111;
+      border-bottom: 2px solid #111;
+    }
+
+    /* Form */
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .login-form input[type="text"],
+    .login-form input[type="password"] {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 0.95rem;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .login-form input[type="text"]::placeholder,
+    .login-form input[type="password"]::placeholder {
+      color: #999;
+    }
+
+    .login-form input:focus {
+      border-color: #111;
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 16px;
+      background-color: #1a1a1a;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 5px;
+      transition: background-color 0.2s;
+    }
+
+    .btn-login:hover {
+      background-color: #333;
+    }
+
+    /* Additional Links */
+    .login-links {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin-top: 20px;
+      font-size: 0.8rem;
+      color: #666;
+    }
+
+    .login-links a {
+      color: #666;
+      text-decoration: none;
+    }
+
+    .login-links a:hover {
+      text-decoration: underline;
+    }
+
+    .login-links span {
+      color: #ccc;
+    }
+
+    /* Social Login */
+    .social-login-section {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .btn-social {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-kakao {
+      background-color: #FEE500;
+      color: #000;
+    }
+
+    .btn-naver {
+      background-color: #03C75A;
+      color: #fff;
+    }
+
+    .social-icon {
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+
+    /* Footer Styles */
+    footer {
+      background-color: #f4f4f4;
+      padding: 50px;
+      color: #111;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 20px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .footer-links a {
+      text-decoration: none;
+      color: #111;
+    }
+
+    .footer-links a:hover {
+      opacity: 0.7;
+    }
+
+    .footer-copyright {
+      font-family: 'Lora', serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .footer-bottom {
+      font-size: 0.7rem;
+      color: #888;
+      line-height: 1.6;
+      letter-spacing: -0.2px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="nav-left">
+      <a href="shop.html">Shop</a>
+      <a href="#">About</a>
+      <a href="00.html">Campaign</a>
+    </div>
+    
+    <div class="logo-container">
+      <a href="index.html"><img src="logo.png" alt="Logo" class="logo"></a>
+    </div>
+    
+    <div class="nav-right">
+      <a href="login.html" class="icon-btn">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </a>
+      <div class="icon-btn" onclick="location.href='shop.html'">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <path d="M16 10a4 4 0 0 1-8 0"></path>
+        </svg>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Login Section -->
+  <main>
+    <div class="login-wrapper">
+      <div class="login-logo" style="text-align: center; margin-bottom: 60px;">
+        <a href="index.html">
+          <img src="logo.png" alt="ORB Logo" style="height: 140px; filter: brightness(0); object-fit: contain;">
+        </a>
+      </div>
+      <div class="login-tabs">
+        <div class="active">로그인</div>
+        <div>비회원 주문조회</div>
+      </div>
+
+      <div class="login-form">
+        <input type="text" placeholder="아이디(이메일)">
+        <input type="password" placeholder="비밀번호">
+        <button class="btn-login">로그인</button>
+      </div>
+
+      <div class="login-links">
+        <a href="#">아이디 찾기</a>
+        <span>|</span>
+        <a href="#">비밀번호 찾기</a>
+        <span>|</span>
+        <a href="#">회원가입</a>
+      </div>
+
+      <div class="social-login-section">
+        <button class="btn-social btn-kakao">
+          <span class="social-icon">●</span> 카카오 로그인
+        </button>
+        <button class="btn-social btn-naver">
+          <span class="social-icon">N</span> 네이버 로그인
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-links">
+        <a href="#">문의하기</a>
+        <a href="#">고객 서비스</a>
+        <a href="#">스토어 찾기</a>
+        <a href="#">법적 고지</a>
+        <a href="#">개인정보 처리방침</a>
+        <a href="#">구독하기</a>
+        <a href="#">소셜</a>
+        <a href="#">국가: South Korea</a>
+      </div>
+      <div class="footer-copyright">
+        ©2026. ORB. ALL RIGHT RESERVED
+      </div>
+    </div>
+    <div class="footer-bottom">
+      (주)오브 | 대표자명: 홍길동 | 사업자등록번호: 211-88-01234 | 통신판매업신고번호: 제2026-서울강남-5678호 | 이메일문의: contact@orb.kr | 개인정보보호책임자: 김철수 | 주소: 서울특별시 강남구 역삼로 456, 12층 | 전화번호: 02-1234-5678<br>
+      고객님의 안전한 현금결제 거래를 위해 저희 쇼핑몰에서 가입한 구매안전서비스를 이용하실 수 있습니다.
+    </div>
+  </footer>
+
+</body>
+</html>

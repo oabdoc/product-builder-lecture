@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Detail Page - Orb</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      font-family: 'Roboto', sans-serif;
+      background-color: #111; /* 영상을 더 선명하고 텍스트가 잘 보이도록 어두운 배경으로 변경 */
+      color: #fff;
+    }
+    
+    /* Header Styles */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 65px 50px 130px;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 100%); /* 어두운 배경에 맞게 다시 수정 */
+      transition: transform 2s cubic-bezier(0.25, 1, 0.5, 1), opacity 2s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    header.hidden {
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    .nav-left {
+      display: flex;
+      gap: 30px;
+      font-size: 1.15rem;
+      font-weight: 400;
+    }
+    
+    .nav-left a {
+      text-decoration: none;
+      color: #fff; /* 원래의 흰색으로 복구 */
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+    
+    .nav-left a:hover {
+      opacity: 0.6;
+    }
+    
+    .logo-container {
+      position: absolute;
+      top: 45px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .logo {
+      height: 80px; 
+      object-fit: contain;
+    }
+    
+    .nav-right {
+      display: flex;
+      gap: 20px;
+      font-size: 1.15rem;
+      align-items: center;
+    }
+    
+    .nav-right .icon-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      color: #fff; /* 원래의 흰색으로 복구 */
+      transition: opacity 0.2s ease;
+    }
+    
+    .nav-right .icon-btn:hover {
+      opacity: 0.6;
+    }
+    
+    /* Scroll Text Section Styles */
+    .scroll-text-section {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 300vh; /* 500vh에서 300vh로 줄여 스크롤 피로도를 낮춤 */
+      background-color: transparent;
+    }
+
+    .scroll-text-container {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .reveal-text {
+      position: absolute;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 500;
+      font-size: 2.8rem; /* 텍스트 크기 증가 (기존 2.2rem) */
+      line-height: 1.5;
+      color: #fff;
+      margin: 0;
+      opacity: 0;
+      transform: translateY(40px); /* 처음에 약간 아래에 위치 */
+      transition: opacity 1s ease-out, transform 1s ease-out; /* 전환 속도를 1초로 약간 빠르게 조절 */
+      text-align: center;
+      width: 100%;
+      padding: 0 30px;
+      box-sizing: border-box;
+      pointer-events: none;
+    }
+    
+    .reveal-text.active {
+      opacity: 1;
+      transform: translateY(0); /* 정중앙으로 올라오며 등장 */
+    }
+    
+    .reveal-text.past {
+      opacity: 0;
+      transform: translateY(-40px); /* 위로 사라짐 */
+    }
+    
+    @media (max-width: 768px) {
+      .reveal-text {
+        font-size: 2.0rem; /* 모바일에서도 텍스트 크기 증가 (기존 1.6rem) */
+      }
+    }
+
+    /* Background Video Style */
+    .bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: 0; /* 배경색 위로 올라오도록 0으로 설정 */
+      opacity: 0.45; /* 영상이 더 선명하게 보이도록 투명도 증가 */
+      pointer-events: none;
+    }
+    
+    /* Content Section Styles */
+    .content-section {
+      padding: 100px 50px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #fff;
+      position: relative;
+      z-index: 2; /* To appear above the background video */
+    }
+
+    .section-title {
+      font-family: 'Lora', serif;
+      font-size: 2.2rem;
+      color: #111;
+      margin-bottom: 20px;
+      margin-top: 0;
+    }
+
+    .section-subtitle {
+      font-size: 1rem;
+      color: #666;
+      max-width: 600px;
+      text-align: center;
+      line-height: 1.6;
+      margin-bottom: 60px;
+    }
+    
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 40px;
+      width: 100%;
+      max-width: 1200px;
+    }
+    
+    .product-card {
+      background-color: #f9f9f9;
+      height: 350px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #999;
+      font-size: 0.9rem;
+      transition: transform 0.3s ease;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .product-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    
+    .product-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .card-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      box-sizing: border-box;
+    }
+    
+    .product-card:hover .card-overlay {
+      opacity: 1;
+    }
+    
+    .card-overlay strong {
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+    
+    .card-overlay p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin: 0;
+      word-break: keep-all;
+    }
+    
+    /* Footer Styles */
+    footer {
+      background-color: #f4f4f4;
+      padding: 50px;
+      color: #111;
+      position: relative;
+      z-index: 2;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 20px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .footer-links a {
+      text-decoration: none;
+      color: #111;
+    }
+
+    .footer-links a:hover {
+      opacity: 0.7;
+    }
+
+    .footer-copyright {
+      font-family: 'Lora', serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .footer-bottom {
+      font-size: 0.7rem;
+      color: #888;
+      line-height: 1.6;
+      letter-spacing: -0.2px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Video -->
+  <video class="bg-video" autoplay loop muted playsinline>
+    <source src="mv01.mp4" type="video/mp4">
+  </video>
+
+  <!-- Header -->
+  <header>
+    <div class="nav-left">
+      <a href="shop.html">Shop</a>
+      <a href="#">About</a>
+      <a href="00.html">Campaign</a>
+    </div>
+    
+    <div class="logo-container">
+      <a href="index.html"><img src="logo.png" alt="Logo" class="logo"></a>
+    </div>
+    
+    <div class="nav-right">
+      <a href="login.html" class="icon-btn" style="text-decoration: none; color: #fff;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </a>
+      <div class="icon-btn">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <path d="M16 10a4 4 0 0 1-8 0"></path>
+        </svg>
+        <span>0</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Scroll Text Section -->
+  <section class="scroll-text-section">
+    <div class="scroll-text-container">
+      <p class="reveal-text">흐트러진 맥박, 정의할 수 없는 스트레스</p>
+      <p class="reveal-text">당신의 수치를 읽고</p>
+      <p class="reveal-text">한치의 오차 없이 필요한 안정만을 전달합니다.</p>
+      <p class="reveal-text">당신의 데스크 위, 가장 고요한 디바이스</p>
+    </div>
+  </section>
+
+  <!-- Content Section -->
+  <section class="content-section">
+    <h2 class="section-title">제품 사용법 알아보기</h2>
+    <p class="section-subtitle">복잡한 앱을 켤 필요도, 타인의 시선을 의식할 필요도 없습니다. 즉각적으로 스트레스를 해소하고, 당신의 퍼포먼스를 복구하세요.</p>
+    
+    <div class="product-grid">
+      <div class="product-card">
+        <img src="ty01.png" alt="Product 1">
+        <div class="card-overlay">
+          <strong>STEP 1. TOUCH & WAKE</strong>
+          <p>회의 중 감정이 흔들리거나 집중이 흐트러질 때, 엄지를 2초간 가볍게 올려두세요. 그 짧은 순간, GSR 센서가 피부 반응을 빠르게 감지합니다.</p>
+        </div>
+      </div>
+      <div class="product-card">
+        <img src="ty02.png" alt="Product 2">
+        <div class="card-overlay">
+          <strong>STEP 2. SMART DISPENSE</strong>
+          <p>교감신경 과부하가 감지되면, 상단 슬롯이 열리며 L-테아닌 구강 용해 필름(ODF) 1장을 자동으로 제공합니다. 물이나 별도의 준비 없이, 꺼내 바로 혀 밑에 두면 됩니다.</p>
+        </div>
+      </div>
+      <div class="product-card">
+        <img src="ty03.png" alt="Product 3">
+        <div class="card-overlay">
+          <strong>STEP 3. RETURN TO PEAK</strong>
+          <p>구강 점막을 통해 빠르게 흡수된 L-테아닌이 긴장 상태를 완화합니다. 졸림 없이 불필요한 긴장을 줄이고, 다시 안정적인 집중 상태로 돌아갈 수 있습니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-links">
+        <a href="#">문의하기</a>
+        <a href="#">고객 서비스</a>
+        <a href="#">스토어 찾기</a>
+        <a href="#">법적 고지</a>
+        <a href="#">개인정보 처리방침</a>
+        <a href="#">구독하기</a>
+        <a href="#">소셜</a>
+        <a href="#">국가: South Korea</a>
+      </div>
+      <div class="footer-copyright">
+        ©2026. ORB. ALL RIGHT RESERVED
+      </div>
+    </div>
+    <div class="footer-bottom">
+      (주)오브 | 대표자명: 홍길동 | 사업자등록번호: 123-45-67890 | 통신판매업신고번호: 제2024-서울강남-1234호 | 이메일문의: cs@orb.com | 개인정보보호책임자: 김철수 | 주소: 서울특별시 강남구 테헤란로 123 4층 | 전화번호: 1234-5678<br>
+      고객님의 안전한 현금결제 거래를 위해 저희 쇼핑몰에서 가입한 구매안전서비스를 이용하실 수 있습니다.
+    </div>
+  </footer>
+
+  <script>
+    let lastScrollY = window.scrollY;
+    const header = document.querySelector('header');
+
+    window.addEventListener('scroll', () => {
+      const currentScrollY = window.scrollY;
+      
+      if (currentScrollY > lastScrollY && currentScrollY > 80) {
+        // Scroll down
+        header.classList.add('hidden');
+      } else {
+        // Scroll up
+        header.classList.remove('hidden');
+      }
+      
+      lastScrollY = currentScrollY;
+    });
+
+    // Scroll Animation Logic for Texts
+    const texts = document.querySelectorAll('.reveal-text');
+    const section = document.querySelector('.scroll-text-section');
+    
+    function updateScrollTexts() {
+      const rect = section.getBoundingClientRect();
+      const maxScroll = rect.height - window.innerHeight;
+      let scrollY = -rect.top;
+      
+      // 스크롤이 섹션 영역 안에 있는지 확인
+      if (scrollY < 0) scrollY = 0;
+      if (scrollY > maxScroll) scrollY = maxScroll;
+      
+      const progress = scrollY / maxScroll;
+      const totalTexts = texts.length;
+      
+      // 현재 진행도에 따른 텍스트 인덱스 계산
+      let currentIndex = Math.floor(progress * totalTexts);
+      if (currentIndex >= totalTexts) currentIndex = totalTexts - 1;
+      
+      texts.forEach((text, i) => {
+        if (i === currentIndex) {
+          text.classList.add('active');
+          text.classList.remove('past');
+        } else if (i < currentIndex) {
+          // 지나간 텍스트
+          text.classList.remove('active');
+          text.classList.add('past');
+        } else {
+          // 아직 오지 않은 텍스트
+          text.classList.remove('active');
+          text.classList.remove('past');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', updateScrollTexts);
+    
+    // 초기 로드 시 한 번 실행
+    updateScrollTexts();
+  </script>
+</body>
+</html>
